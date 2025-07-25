@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pms_reservations', function (Blueprint $table) {
+        Schema::connection('tenant')->create('pms_reservations', function (Blueprint $table) {
             $table->id();
             $table->string('confirmation_number', 50)->unique();
             $table->string('guest_name');
@@ -46,6 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pms_reservations');
+        Schema::connection('tenant')->dropIfExists('pms_reservations');
     }
 };

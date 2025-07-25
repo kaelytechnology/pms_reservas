@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pms_restaurant_availabilities', function (Blueprint $table) {
+        Schema::connection('tenant')->create('pms_restaurant_availabilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('restaurant_id')->constrained('pms_restaurants')->onDelete('cascade');
             $table->date('date');
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->index(['restaurant_id', 'date', 'time_slot']);
             $table->index('date');
             $table->index('is_available');
-            $table->unique(['restaurant_id', 'date', 'time_slot']);
+            $table->unique(['restaurant_id', 'date', 'time_slot'], 'pms_rest_avail_unique');
         });
     }
 
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pms_restaurant_availabilities');
+        Schema::connection('tenant')->dropIfExists('pms_restaurant_availabilities');
     }
 };

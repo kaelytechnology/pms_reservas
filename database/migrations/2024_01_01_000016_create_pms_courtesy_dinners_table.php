@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pms_courtesy_dinners', function (Blueprint $table) {
+        Schema::connection('tenant')->create('pms_courtesy_dinners', function (Blueprint $table) {
             $table->id();
             $table->foreignId('reservation_id')->constrained('pms_reservations')->onDelete('cascade');
             $table->foreignId('restaurant_id')->constrained('pms_restaurants')->onDelete('cascade');
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pms_courtesy_dinners');
+        Schema::connection('tenant')->dropIfExists('pms_courtesy_dinners');
     }
 };

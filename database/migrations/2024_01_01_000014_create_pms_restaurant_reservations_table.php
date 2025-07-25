@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pms_restaurant_reservations', function (Blueprint $table) {
+        Schema::connection('tenant')->create('pms_restaurant_reservations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('reservation_id')->constrained('pms_reservations')->onDelete('cascade');
             $table->foreignId('restaurant_id')->constrained('pms_restaurants')->onDelete('cascade');
@@ -35,10 +35,10 @@ return new class extends Migration
             $table->softDeletes();
 
             // Indexes
-            $table->index(['reservation_date', 'reservation_time']);
+            $table->index(['reservation_date', 'reservation_time'], 'pms_rest_res_date_time_idx');
             $table->index('status');
             $table->index('people');
-            $table->index(['restaurant_id', 'reservation_date']);
+            $table->index(['restaurant_id', 'reservation_date'], 'pms_rest_res_restaurant_date_idx');
         });
     }
 
@@ -47,6 +47,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pms_restaurant_reservations');
+        Schema::connection('tenant')->dropIfExists('pms_restaurant_reservations');
     }
 };

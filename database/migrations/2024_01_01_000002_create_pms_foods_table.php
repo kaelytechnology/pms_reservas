@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::connection('tenant')->create('pms_foods', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255)->index();
+            $table->string('name', 191);
             $table->text('description')->nullable();
             
             // User tracking fields
