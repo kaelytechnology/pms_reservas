@@ -68,7 +68,7 @@ La documentación completa está organizada en la carpeta `doc/` para facilitar 
 ### 1. Instalar via Composer
 
 ```bash
-composer require kaely/pms_hotel
+composer require kaelytechnology/pms_hotel
 ```
 
 ### 2. Ejecutar el comando de instalación
