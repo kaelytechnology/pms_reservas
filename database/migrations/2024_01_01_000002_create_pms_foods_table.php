@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('tenant')->create('pms_foods', function (Blueprint $table) {
+        Schema::create('pms_foods', function (Blueprint $table) {
             $table->id();
             $table->string('name', 191);
             $table->text('description')->nullable();
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('tenant')->dropIfExists('pms_foods');
+        Schema::dropIfExists('pms_foods');
     }
 };

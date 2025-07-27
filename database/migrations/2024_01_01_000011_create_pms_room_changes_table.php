@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('tenant')->create('pms_room_changes', function (Blueprint $table) {
+        Schema::create('pms_room_changes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('reservation_id')->constrained('pms_reservations')->onDelete('cascade');
             $table->string('old_room_number', 50);
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('tenant')->dropIfExists('pms_room_changes');
+        Schema::dropIfExists('pms_room_changes');
     }
 };

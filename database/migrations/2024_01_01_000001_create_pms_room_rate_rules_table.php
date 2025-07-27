@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('tenant')->create('pms_room_rate_rules', function (Blueprint $table) {
+        Schema::create('pms_room_rate_rules', function (Blueprint $table) {
             $table->id();
             $table->string('code', 50)->index();
             $table->string('class', 100);
@@ -47,6 +47,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('tenant')->dropIfExists('pms_room_rate_rules');
+        Schema::dropIfExists('pms_room_rate_rules');
     }
 };
