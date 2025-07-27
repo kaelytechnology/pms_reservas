@@ -65,6 +65,8 @@ La documentación completa está organizada en la carpeta `doc/` para facilitar 
 
 ## 🚀 Instalación
 
+### Instalación Estándar
+
 ### 1. Instalar via Composer
 
 ```bash
@@ -92,6 +94,17 @@ php artisan migrate
 
 ```bash
 php artisan pms-hotel:seed
+```
+
+### Instalación Multi-Tenant
+
+Para aplicaciones multi-tenant, este paquete soporta bases de datos específicas por inquilino. Consulta la [Guía de Configuración Multi-Tenant](MULTI_TENANT_SETUP.md) para instrucciones detalladas.
+
+**Configuración rápida para multi-tenancy:**
+```bash
+composer require kaelytechnology/pms_hotel
+php artisan vendor:publish --tag=pms-hotel-migrations
+# Luego ejecuta las migraciones específicas del inquilino según tu paquete de tenancy
 ```
 
 ## ⚙️ Configuración

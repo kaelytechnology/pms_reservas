@@ -38,15 +38,20 @@ class PmsHotelServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        // Removed loadMigrationsFrom() to support multi-tenancy
+        // Migrations should be published to tenant-specific directories
         
         $this->publishes([
             __DIR__.'/../config/pms-hotel.php' => config_path('pms-hotel.php'),
         ], 'pms-hotel-config');
 
         $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
+            __DIR__.'/../database/migrations' => database_path('migrations/tenant'),
         ], 'pms-hotel-migrations');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ], 'pms-hotel-migrations-main');
 
         $this->publishes([
             __DIR__.'/../database/seeders' => database_path('seeders'),

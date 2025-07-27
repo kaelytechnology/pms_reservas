@@ -1,0 +1,105 @@
+# Multi-Tenant Setup Guide
+
+## Overview
+
+This PMS Hotel package has been configured to support multi-tenancy by removing automatic migration loading. This prevents the PMS tables from being created in the main database and allows them to be created in tenant-specific databases.
+
+## Installation for Multi-Tenant Applications
+
+### 1. Install the Package
+
+```bash
+composer require kaelytechnology/pms_hotel
+```
+
+### 2. Publish Migrations to Tenant Directory
+
+For tenant-specific migrations:
+
+```bash
+php artisan vendor:publish --tag=pms-hotel-migrations
+```
+
+This will publish migrations to `database/migrations/tenant/` directory.
+
+### 3. Publish Migrations to Main Database (Optional)
+
+If you need some PMS tables in the main database:
+
+```bash
+php artisan vendor:publish --tag=pms-hotel-migrations-main
+```
+
+This will publish migrations to `database/migrations/` directory.
+
+### 4. Publish Configuration
+
+```bash
+php artisan vendor:publish --tag=pms-hotel-config
+```
+
+### 5. Run Tenant Migrations
+
+Depending on your multi-tenancy package, run migrations for each tenant:
+
+```bash
+# Example with Spatie Laravel Multitenancy
+php artisan tenants:artisan "migrate --path=database/migrations/tenant"
+
+# Example with Stancl Tenancy
+php artisan tenants:migrate --path=database/migrations/tenant
+```
+
+## Key Changes Made
+
+1. **Removed `loadMigrationsFrom()`**: This prevents automatic migration execution in the main database
+2. **Added tenant-specific publish path**: Migrations are published to `database/migrations/tenant/`
+3. **Maintained backward compatibility**: Option to publish to main migrations directory still available
+
+## Migration Strategy Options
+
+### Option 1: Tenant-Only Tables
+- Publish migrations with `--tag=pms-hotel-migrations`
+- All PMS tables will be created in tenant databases only
+
+### Option 2: Mixed Approach
+- Some tables in main database (e.g., global configurations)
+- Some tables in tenant databases (e.g., reservations, restaurant data)
+- Manually move specific migrations between directories as needed
+
+### Option 3: Main Database Only
+- Publish migrations with `--tag=pms-hotel-migrations-main`
+- All PMS tables will be created in the main database
+- Use tenant identification columns in your application logic
+
+## Troubleshooting
+
+### Issue: Migrations Running in Main Database
+- **Cause**: Using `loadMigrationsFrom()` in ServiceProvider
+- **Solution**: This has been removed in the updated package
+
+### Issue: Tables Not Found in Tenant Database
+- **Cause**: Migrations not published to tenant directory
+- **Solution**: Run `php artisan vendor:publish --tag=pms-hotel-migrations`
+
+### Issue: Need to Reset Migration State
+- **Solution**: 
+  ```bash
+  # For tenant databases
+  php artisan tenants:artisan "migrate:reset"
+  php artisan tenants:artisan "migrate --path=database/migrations/tenant"
+  ```
+
+## Compatibility
+
+- **Spatie Laravel Multitenancy**: ✅ Compatible
+- **Stancl Tenancy**: ✅ Compatible
+- **Custom Multi-tenancy Solutions**: ✅ Compatible
+- **Single Tenant Applications**: ✅ Compatible (use main migrations)
+
+## Notes
+
+- All models use the default database connection
+- No tenant-specific connection configuration in models
+- Multi-tenancy is handled at the database/migration level
+- Existing applications can migrate by republishing migrations to appropriate directories
