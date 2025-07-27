@@ -98,17 +98,25 @@ php artisan pms-hotel:seed
 
 ### Instalación Multi-Tenant
 
-Este paquete cuenta con **carga inteligente de migraciones** que detecta automáticamente tu configuración:
+Para aplicaciones multi-tenant, las migraciones deben ejecutarse manualmente en contexto de tenant para mantener la separación adecuada:
 
-- **Single-tenant**: Funciona inmediatamente con `php artisan migrate`
-- **Multi-tenant**: Usa automáticamente `database/migrations/tenant/` si existe
-
-**Configuración rápida para multi-tenancy:**
+**Flujo de instalación para multi-tenancy:**
 ```bash
+# 1. Instalar el paquete
 composer require kaelytechnology/pms_hotel
-php artisan vendor:publish --tag=pms-hotel-migrations  # Crea directorio tenant
-php artisan tenants:migrate  # Ejecuta con tu paquete de tenancy
+
+# 2. Publicar migraciones al directorio tenant
+php artisan vendor:publish --tag=pms-hotel-migrations
+
+# 3. Ejecutar migraciones en contexto de tenant
+php artisan tenants:run "migrate"
 ```
+
+**Ventajas de este enfoque:**
+- ✅ **Separación clara**: Las migraciones solo se ejecutan en bases de datos de tenant
+- ✅ **Control manual**: El desarrollador decide cuándo y dónde ejecutar las migraciones
+- ✅ **Evita conflictos**: Previene ejecución accidental en la base de datos principal
+- ✅ **Mejores prácticas**: Sigue el patrón estándar de Laravel para paquetes multitenant
 
 Consulta la [Guía de Configuración Multi-Tenant](MULTI_TENANT_SETUP.md) para instrucciones detalladas.
 
