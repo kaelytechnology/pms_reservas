@@ -2,7 +2,12 @@
 
 ## Overview
 
-This PMS Hotel package has been configured to support multi-tenancy by removing automatic migration loading. This prevents the PMS tables from being created in the main database and allows them to be created in tenant-specific databases.
+This PMS Hotel package has been configured with **smart migration loading** to automatically support both single-tenant and multi-tenant applications:
+
+- **If `database/migrations/tenant/` directory exists**: Migrations are loaded from there (multi-tenant mode)
+- **If `database/migrations/tenant/` directory doesn't exist**: Migrations are loaded from the package (single-tenant mode)
+
+This automatic detection makes the package work seamlessly in any environment without manual configuration.
 
 ## Installation for Multi-Tenant Applications
 
@@ -12,42 +17,47 @@ This PMS Hotel package has been configured to support multi-tenancy by removing 
 composer require kaelytechnology/pms_hotel
 ```
 
-### 2. Publish Migrations to Tenant Directory
+### 2. Automatic Detection
 
-For tenant-specific migrations:
+The package will automatically detect your setup:
+
+- **Single-tenant apps**: Migrations load automatically from the package
+- **Multi-tenant apps**: If you have `database/migrations/tenant/` directory, migrations load from there
+
+### 3. For Multi-Tenant Setup
+
+If you want tenant-specific migrations, simply publish them:
 
 ```bash
 php artisan vendor:publish --tag=pms-hotel-migrations
 ```
 
-This will publish migrations to `database/migrations/tenant/` directory.
+This creates `database/migrations/tenant/` directory and the package will automatically use it.
 
-### 3. Publish Migrations to Main Database (Optional)
+### 4. For Single-Tenant Setup
 
-If you need some PMS tables in the main database:
+No additional steps needed! The package works out of the box:
 
 ```bash
-php artisan vendor:publish --tag=pms-hotel-migrations-main
+php artisan migrate
 ```
 
-This will publish migrations to `database/migrations/` directory.
-
-### 4. Publish Configuration
+### 5. Publish Configuration (Optional)
 
 ```bash
 php artisan vendor:publish --tag=pms-hotel-config
 ```
 
-### 5. Run Tenant Migrations
+### 6. Run Tenant Migrations (Multi-tenant only)
 
-Depending on your multi-tenancy package, run migrations for each tenant:
+Depending on your multi-tenancy package:
 
 ```bash
 # Example with Spatie Laravel Multitenancy
-php artisan tenants:artisan "migrate --path=database/migrations/tenant"
+php artisan tenants:artisan "migrate"
 
 # Example with Stancl Tenancy
-php artisan tenants:migrate --path=database/migrations/tenant
+php artisan tenants:migrate
 ```
 
 ## Key Changes Made

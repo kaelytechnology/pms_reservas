@@ -38,8 +38,16 @@ class PmsHotelServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Removed loadMigrationsFrom() to support multi-tenancy
-        // Migrations should be published to tenant-specific directories
+        // Smart migration loading: check if tenant directory exists
+        $tenantMigrationsPath = database_path('migrations/tenant');
+        
+        if (is_dir($tenantMigrationsPath)) {
+            // Load migrations from tenant directory if it exists
+            $this->loadMigrationsFrom($tenantMigrationsPath);
+        } else {
+            // Load migrations from package if tenant directory doesn't exist
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        }
         
         $this->publishes([
             __DIR__.'/../config/pms-hotel.php' => config_path('pms-hotel.php'),
