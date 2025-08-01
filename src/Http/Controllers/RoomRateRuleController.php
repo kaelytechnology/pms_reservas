@@ -17,7 +17,7 @@ class RoomRateRuleController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        Gate::authorize('view', RoomRateRule::class);
+        Gate::authorize('viewAny', RoomRateRule::class);
 
         $query = RoomRateRule::query();
 
@@ -91,7 +91,7 @@ class RoomRateRuleController extends Controller
      */
     public function update(RoomRateRuleRequest $request, RoomRateRule $roomRateRule): JsonResponse
     {
-        Gate::authorize('edit', $roomRateRule);
+        Gate::authorize('update', $roomRateRule);
 
         $roomRateRule->update($request->validated());
 
@@ -175,7 +175,7 @@ class RoomRateRuleController extends Controller
      */
     public function getClasses(): JsonResponse
     {
-        Gate::authorize('view', RoomRateRule::class);
+        Gate::authorize('viewAny', RoomRateRule::class);
 
         $classes = RoomRateRule::distinct('class')
             ->whereNotNull('class')
