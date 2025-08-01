@@ -338,7 +338,7 @@ Genera automáticamente:
 
 Todas las rutas API tienen:
 - `api` - Middleware básico de API
-- `auth:sanctum` - Autenticación requerida
+- `auth:api` - Autenticación requerida
 
 ### Prefijo de Rutas
 

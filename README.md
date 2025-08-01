@@ -165,7 +165,7 @@ El paquete se registra automáticamente gracias a Laravel's Package Auto-Discove
 
 ### Middleware y Rutas
 
-Todas las rutas están protegidas con middleware `auth:sanctum` y tienen el prefijo `api/pms`.
+Todas las rutas están protegidas con middleware `auth:api` y tienen el prefijo `api/pms`.
 
 ## 🏨 Módulos Disponibles
 

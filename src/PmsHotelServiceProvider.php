@@ -93,7 +93,7 @@ class PmsHotelServiceProvider extends ServiceProvider
     {
         Route::group([
             'prefix' => 'api/pms',
-            'middleware' => ['api', 'auth:sanctum'],
+            'middleware' => ['api', 'auth:api'],
             'namespace' => 'Kaely\\PmsHotel\\Http\\Controllers',
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
